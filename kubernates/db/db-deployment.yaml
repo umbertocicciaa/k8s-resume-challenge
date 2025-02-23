@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: databases-deployment
+  labels:
+    app: app-db
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: app-db
+  template:
+    metadata:
+      labels:
+        app: app-db
+    spec:
+      containers:
+      - name: app-db
+        image: umbertociccia/ecomm-db-app:v4
+        ports:
+        - containerPort: 3306

@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.database.fullname | quote }}
+  namespace: {{ .Values.namespace | quote }}
+spec:
+  replicas: {{ .Values.database.replicas }}
+  selector:
+    matchLabels:
+      app: mariadb
+  template:
+    metadata:
+      labels:
+        app: mariadb
+    spec:
+      containers:
+      - name: mariadb
+        image: {{ .Values.database.image | default "umbertociccia/ecomm-db-app:v1" | quote }}
+        ports:
+        - containerPort: {{ .Values.database.service.port | default 3306 }}

@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ecomm-app-deployment
+  labels:
+    app: ecomm-app-deployment
+spec:
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate  
+  replicas: 0
+  selector:
+    matchLabels:
+      app: ecomm-app
+  template:
+    metadata:
+      labels:
+        app: ecomm-app
+    spec:
+      containers:
+      - name: ecomm-app
+        image: umbertociccia/ecomm-app:v5
+        env:
+        - name: DB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: website-configmap
+              key: DB_HOST
+        - name: DB_USER
+          valueFrom:
+            configMapKeyRef:
+              name: website-configmap
+              key: DB_USER
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: DB_PASSWORD
+        - name: DB_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: website-configmap
+              key: DB_NAME
+        - name: FEATURE_DARK_MODE
+          valueFrom:
+            configMapKeyRef:
+              name: feature-toggle-config
+              key: FEATURE_DARK_MODE
+        ports:
+        - containerPort: 80
+      resources:
+        requests:
+          cpu: "300m"     
