@@ -19,7 +19,7 @@ jobs:
       id: install
 
     - name: Authenticate to Google Cloud
-      run: echo ${{ secrets.GCP_API_KEY }} | gcloud auth activate-service-account --key-file=-
+      run: echo ${{ secrets.GCP_SA_KEY }} | gcloud auth activate-service-account --key-file=-
 
     - name: Configure Docker to use the gcloud command-line tool as a credential helper
       run: |
