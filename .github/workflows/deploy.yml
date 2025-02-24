@@ -23,9 +23,9 @@ jobs:
       run: |
         gcloud auth configure-docker
 
-    - name: Create GKE cluster
-      run: |
-        gcloud container clusters create kubernetes-cluster --zone us-central1-a --project ${{ secrets.GCP_PROJECT_ID }}
+    #- name: Create GKE cluster
+    #  run: |
+    #    gcloud container clusters create kubernetes-cluster --zone us-central1-a --project ${{ secrets.GCP_PROJECT_ID }}
 
     - name: Update kube config
       run: gcloud container clusters get-credentials kubernetes-cluster --zone us-central1-a --project ${{ secrets.GCP_PROJECT_ID }}
