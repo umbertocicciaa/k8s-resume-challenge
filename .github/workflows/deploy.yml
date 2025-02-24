@@ -12,12 +12,6 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Install kubectl
-      uses: azure/setup-kubectl@v2.0
-      with:
-        version: 'v1.27.0'
-      id: install
-
     - name: Authenticate to Google Cloud
       uses: google-github-actions/auth@v2
       with:
@@ -27,6 +21,10 @@ jobs:
     - name: Configure Docker to use the gcloud command-line tool as a credential helper
       run: |
         gcloud auth configure-docker
+
+    - name: Create GKE cluster
+      run: |
+        gcloud container clusters create kubernetes-cluster --zone us-central1-a --project ${{ secrets.GCP_PROJECT_ID }}
 
     - name: Update kube config
       run: gcloud container clusters get-credentials kubernetes-cluster --zone us-central1-a --project ${{ secrets.GCP_PROJECT_ID }}
